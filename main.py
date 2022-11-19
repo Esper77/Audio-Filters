@@ -2,7 +2,7 @@ import wave
 import struct
 
 
-audio_file = wave.open("aaa.wav")
+audio_file = wave.open("input.wav")
 result_file = wave.open("res.wav", "wb")
 
 
