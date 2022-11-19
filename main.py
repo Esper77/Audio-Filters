@@ -1,33 +1,29 @@
-import wave, struct
+import wave
+import struct
+
 
 audio_file = wave.open("aaa.wav")
 result_file = wave.open("res.wav", "wb")
 
 
-CHANNELS = audio_file.getnchannels() # количество каналов
-FORMAT = audio_file.getsampwidth() # глубина звука
-RATE = audio_file.getframerate() # частота дискретизации
+CHANNELS = audio_file.getnchannels()
+FORMAT = audio_file.getsampwidth()
+RATE = audio_file.getframerate()
 frames_count = audio_file.getnframes()
 frames = audio_file.readframes(frames_count)
 
+result_file.setnchannels(CHANNELS)
+result_file.setsampwidth(FORMAT)
+result_file.setframerate(RATE)
 
-result_file.setnchannels(CHANNELS) # количество каналов
-result_file.setsampwidth(FORMAT) # глубина звука
-result_file.setframerate(RATE) # частота дискретизации
 
-
-values = list(struct.unpack(f"<{frames_count}h", frames))
+values = list(struct.unpack(f"<{frames_count*2}h", frames))
 
 distorted = []
 
 for i in range(len(values)):
-    if i % 3 in {1, 2}:
-        values[i] *= 10
+    if i % 2 == 0:
         distorted.append(values[i])
 
-
-
-frames = struct.pack(f"<{frames_count // 3 * 2}h", *distorted)
+frames = struct.pack(f"<{frames_count}h", *distorted)
 result_file.writeframes(frames)
-
-
