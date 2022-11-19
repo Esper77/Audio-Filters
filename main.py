@@ -2,7 +2,7 @@ import wave
 import struct
 
 
-audio_file = wave.open("input.wav")
+audio_file = wave.open("aaa.wav")
 result_file = wave.open("res.wav", "wb")
 
 
@@ -59,6 +59,14 @@ def pairs_pack(values, channels):
     return out_list
 
 
+def mod_sound_volume(values, channels, modifier):
+    for x in range(len(values)):
+        for i in range(channels):
+            values[x][i] = int(values[x][i] * modifier)
+            
+
+
+
 values = list(struct.unpack(f"<{frames_count*CHANNELS}h", frames))
 
 
@@ -67,6 +75,7 @@ paired_values = pairs_pack(values, CHANNELS)
 
 out_values = pairs_unpack(speedup_sound(slow_sound(paired_values, CHANNELS)))
 
+print(out_values)
 
 frames = struct.pack(f"<{len(out_values)}h", *out_values)
 result_file.writeframes(frames)
