@@ -67,7 +67,6 @@ paired_values = pairs_pack(values, CHANNELS)
 
 out_values = pairs_unpack(speedup_sound(slow_sound(paired_values, CHANNELS)))
 
-print(out_values)
 
 frames = struct.pack(f"<{len(out_values)}h", *out_values)
 result_file.writeframes(frames)
